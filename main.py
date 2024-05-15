@@ -37,12 +37,8 @@ def check_message(message):
 # Этот хэндлер будет срабатывать на остальные текстовые сообщения
 @dp.message_handler()
 async def process_text_answers(message: Message):
-    print(message)
     if check_message(message):
-        print("spam")
         await bot.delete_message(message.chat.id, message.message_id)
-    else:
-        print("ok")
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 asyncio.run(dp.start_polling(bot))
