@@ -9,8 +9,6 @@ from config import Config, load_config
 config: Config = load_config()
 BOT_TOKEN: str = config.tg_bot.token
 
-API_TOKEN = '6707863597:AAHZdZk0HlDLIIeWBZ6rbwAJ5cVgbN2-LFc'
-
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher(bot)
 
