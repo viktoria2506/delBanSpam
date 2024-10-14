@@ -45,6 +45,10 @@ def check_message(message):
 async def process_text_answers(message: Message):
     if check_message(message):
         await bot.delete_message(message.chat.id, message.message_id)
+        try:
+            await bot.ban_chat_member(message.chat.id, message.from_user.id)
+        except Exception as e:
+           print("Не удалось заблокировать пользователя: {e}")
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 asyncio.run(dp.start_polling(bot))
