@@ -2,10 +2,13 @@ import random
 import asyncio
 import logging
 import sys
+import re
 from aiogram import Bot, Dispatcher, executor
 from aiogram.dispatcher.filters import Command, Text
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message, ContentType, KeyboardButton
 from config import Config, load_config
+from constants import bad_words, replacements
+
 config: Config = load_config()
 BOT_TOKEN: str = config.tg_bot.token
 
@@ -19,26 +22,25 @@ async def process_start_command(message: Message):
                          'Это бот для очистки спам сообщений в вашем канале')
 
 
-bad_words = ['фальш рубл', 'фальшивые рубли', 'фальш деньг', 'фальшивые деньги', 'фальшивые купюры', 'фальш купю',
-             'фaльш рубл', 'фaльшивые рубли', 'falsh_money',
-             'голые фот', 'интим фото', 'интимные фото', 'интимных фото', 'обнаженные фото', 'обнaженные', 'порно', 'uнтuм',
-             'казино', '1weawx', 'букмекер', '1win', 'casino',
-             'поддельные рубли', 'поддельные деньги', 'поддельные купюры',
-             'крипта', 'наркотики', 'usdt', 'н@ркoтики', 'usдт', 'эcк0pт',
-             'голi фотки', 'sliv_shkur', 'ищем сотрудников для удаленного заработка',
-             'ищем умных peбят', 'не упускай свой шанс', 'моментальный вывод', 'криптоказино',
-             'взаимовыгодного сотрудничества', 'занимаюсь поиском людей', 'криптобирж', 'удаленная занятость',
-             'удаленную занятость', 'свободный график', 'новое прибыльное направление'
-             ]
+def preprocess_message(message):
+    # Заменяем каждый символ в сообщении
+    for original, pattern in replacements.items():
+        message = re.sub(pattern, original, message, flags=re.IGNORECASE)
 
-# функция для проверки наличия запрещенных слов в сообщении
+    return message
+
 def check_message(message):
+    message_lower = message.text.lower()
+
+    processed_message = preprocess_message(message_lower)
+
+    # Использование регулярных выражений для поиска слов
     for word in bad_words:
-        if word in message.text.lower():
+        pattern = r'\b' + re.escape(word)
+        if re.search(pattern, processed_message):
             return True
     return False
 
-# Этот хэндлер будет срабатывать на остальные текстовые сообщения
 @dp.message_handler()
 async def process_text_answers(message: Message):
     if check_message(message):
