@@ -21,4 +21,4 @@ def check_message(message):
 
 
 if __name__ == '__main__':
-    print(check_message("uнтuм"))
+    print(check_message("С᧘ᥙᴛыᥱ ɯκуρы"))
