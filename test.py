@@ -21,4 +21,4 @@ def check_message(message):
 
 
 if __name__ == '__main__':
-    print(check_message("ЛУЧШАЯ ПОДДЕЛЬНАЯ ВАЛЮТА"))
+    print(check_message("Все слитые Девчонки в сеть И многое другое"))
