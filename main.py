@@ -30,9 +30,6 @@ def preprocess_message(message):
     return message
 
 def check_message(message):
-    if message.content_type == "video_note":
-        return True
-
     message_lower = message.text.lower()
 
     processed_message = preprocess_message(message_lower)
@@ -43,6 +40,14 @@ def check_message(message):
         if re.search(pattern, processed_message):
             return True
     return False
+
+@dp.message_handler(content_types=["video_note"])
+async def process_video_messages(message: Message):
+    await bot.delete_message(message.chat.id, message.message_id)
+    try:
+        await bot.ban_chat_member(message.chat.id, message.from_user.id)
+    except Exception as e:
+        print("Не удалось заблокировать пользователя: {e}")
 
 @dp.message_handler()
 async def process_text_answers(message: Message):
