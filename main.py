@@ -30,6 +30,9 @@ def preprocess_message(message):
     return message
 
 def check_message(message):
+    if message.video_note:
+        return True
+
     message_lower = message.text.lower()
 
     processed_message = preprocess_message(message_lower)
