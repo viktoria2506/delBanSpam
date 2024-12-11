@@ -14,11 +14,11 @@ def check_message(message):
     print(processed_message)
 
     for word in bad_words:
-        pattern = r'\b' + re.escape(word)
+        pattern = re.escape(word)
         if re.search(pattern, processed_message):
             return True
     return False
 
 
 if __name__ == '__main__':
-    print(check_message("Все слитые Девчонки в сеть И многое другое"))
+    print(check_message("Ищу людей для удаленногo заработка 90дoллорoв день.По пoдробнoстям лс."))
